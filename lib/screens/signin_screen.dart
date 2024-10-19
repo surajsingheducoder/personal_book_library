@@ -43,11 +43,9 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
-        authProvider.signIn(_emailController.text.trim(), _passwordController.text.trim());
+       var resp = await authProvider.signIn(_emailController.text.trim(), _passwordController.text.trim());
         _showSnackbar('Sign-in successful!');
-
        await storeLoginData(_emailController.text.trim());
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -58,6 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
         );
       } catch (e) {
         _showSnackbar(e.toString(), isError: true);
+        print(e.toString());
       }
     }
   }
