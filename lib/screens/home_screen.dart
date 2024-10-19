@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> logoutPref() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('isLoggedIn');
+    await prefs.setBool('isLoggedIn',false);
   }
 
   @override

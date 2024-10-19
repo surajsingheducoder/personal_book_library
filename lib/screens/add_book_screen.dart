@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:personal_book_library/widgets/custom_button.dart';
 import 'package:personal_book_library/widgets/custom_text_field.dart';
 import '../models/book_model.dart';
@@ -36,12 +37,20 @@ class _AddBookScreenState extends State<AddBookScreen> {
     }
   }
 
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = pickedFile.name;
+      final savedImagePath = '${appDir.path}/$fileName';
+
+      final File savedImage = await File(pickedFile.path).copy(savedImagePath);
+
       setState(() {
-        _imagePath = pickedFile.path;
+        _imagePath = savedImage.path;
       });
     }
   }
@@ -153,7 +162,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       height: screenHeight / 3,
                       width: double.infinity,
                       color: Colors.grey[300],
-                      child: _imagePath.isNotEmpty
+                      child: _imagePath.isNotEmpty && File(_imagePath).existsSync()
                           ? Image.file(File(_imagePath), fit: BoxFit.cover)
                           : const Center(child: Text('Add picture of cover page')),
                     ),

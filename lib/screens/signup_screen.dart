@@ -42,11 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
       try {
-        Provider.of<AuthProvider>(context, listen: false).signUp(_emailController.text.trim(), _passwordController.text.trim());
+       await Provider.of<AuthProvider>(context, listen: false).signUp(_emailController.text.trim(), _passwordController.text.trim());
         _showSnackbar('Sign-up successful!');
-
         storeLoginData(_emailController.text.trim());
-
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen(userEmail: _emailController.text),), (route) => false);
       } catch (e) {
         _showSnackbar(e.toString(), isError: true);
