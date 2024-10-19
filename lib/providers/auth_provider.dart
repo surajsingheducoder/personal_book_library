@@ -29,6 +29,7 @@ class AuthProvider with ChangeNotifier {
           (user) => user['email'] == email && user['password'] == password,
       orElse: () => throw Exception('Invalid email or password.'),
     );
+
     _currentUser = user['email'];
     notifyListeners();
   }

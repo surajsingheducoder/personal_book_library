@@ -39,14 +39,14 @@ class _SignInScreenState extends State<SignInScreen> {
     await prefs.setString('userEmail', email);
   }
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
-        authProvider.signIn(_emailController.text, _passwordController.text);
+        authProvider.signIn(_emailController.text.trim(), _passwordController.text.trim());
         _showSnackbar('Sign-in successful!');
 
-       storeLoginData(_emailController.text.toString());
+       await storeLoginData(_emailController.text.trim());
 
         Navigator.pushReplacement(
           context,
